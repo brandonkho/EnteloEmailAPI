@@ -3,6 +3,15 @@ var app = express();
 var bodyParser = require('body-parser');
 var nodemailer = require('nodemailer');
 var sendgridTransport = require('nodemailer-sendgrid-transport');
+var auth = require('./auth.json');
+
+var options = {
+	service: 'SendGrid',
+	auth: {
+		api_user: auth.username,
+		api_key: auth.password,
+	}
+}
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: false}));
@@ -21,5 +30,31 @@ app.post('/email', (req, res) => {
 	var subject = email.subject;
 	var body = email.body;
 	
-	res.send('Got a POST request');
+	
+
+	if(!to){
+		res.status(400);
+        res.json({
+            "error": "Missing recipient"
+        });
+    }
+
+	var client = nodemailer.createTransport(sendgridTransport(options));
+
+	var email = {
+		from: 'brandonkho1@berkeley.edu',
+		to: to,
+		subject: subject,
+		text: body
+		
+	};
+
+	// client.sendMail(email, function(err, info){
+	// 	if(err){
+	// 		console.log(err);
+	// 	}else{
+	// 		console.log('Message sent: ' + info.message);
+	// 		res.send('Email successfully sent');
+	// 	}
+	// });
 });
