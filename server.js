@@ -3,13 +3,12 @@ var app = express();
 var bodyParser = require('body-parser');
 var nodemailer = require('nodemailer');
 var sendgridTransport = require('nodemailer-sendgrid-transport');
-var auth = require('./auth.json');
 
 var options = {
 	service: 'SendGrid',
 	auth: {
-		api_user: auth.username,
-		api_key: auth.password,
+		api_user: process.env.USERNAME,
+		api_key: process.env.PASSWORD,
 	}
 }
 
