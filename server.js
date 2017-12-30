@@ -5,13 +5,13 @@ var nodemailer = require('nodemailer');
 var sendgridTransport = require('nodemailer-sendgrid-transport');
 var auth = require('./auth.json');
 
-var options = {
-	service: 'SendGrid',
-	auth: {
-		api_user: auth.username,
-		api_key: auth.password,
-	}
-}
+// var options = {
+// 	service: 'SendGrid',
+// 	auth: {
+// 		api_user: auth.username,
+// 		api_key: auth.password,
+// 	}
+// }
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: false}));
@@ -39,7 +39,7 @@ app.post('/email', (req, res) => {
         });
     }
 
-	var client = nodemailer.createTransport(sendgridTransport(options));
+	// var client = nodemailer.createTransport(sendgridTransport(options));
 
 	var email = {
 		from: 'brandonkho1@berkeley.edu',
