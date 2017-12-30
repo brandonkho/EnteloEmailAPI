@@ -3,15 +3,15 @@ var app = express();
 var bodyParser = require('body-parser');
 var nodemailer = require('nodemailer');
 var sendgridTransport = require('nodemailer-sendgrid-transport');
-// var auth = require('./auth.json');
 
-// var options = {
-// 	service: 'SendGrid',
-// 	auth: {
-// 		api_user: auth.username,
-// 		api_key: auth.password,
-// 	}
-// }
+
+var options = {
+	service: 'SendGrid',
+	auth: {
+		api_user: process.env.USERNAME,
+		api_key: process.env.PASSWORD,
+	}
+}
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: false}));
@@ -39,7 +39,7 @@ app.post('/email', (req, res) => {
         });
     }
 
-	// var client = nodemailer.createTransport(sendgridTransport(options));
+	var client = nodemailer.createTransport(sendgridTransport(options));
 
 	var email = {
 		from: 'brandonkho1@berkeley.edu',
@@ -49,12 +49,12 @@ app.post('/email', (req, res) => {
 		
 	};
 
-	// client.sendMail(email, function(err, info){
-	// 	if(err){
-	// 		console.log(err);
-	// 	}else{
-	// 		console.log('Message sent: ' + info.message);
-	// 		res.send('Email successfully sent');
-	// 	}
-	// });
+	client.sendMail(email, function(err, info){
+		if(err){
+			console.log(err);
+		}else{
+			console.log('Message sent: ' + info.message);
+			res.send('Email successfully sent');
+		}
+	});
 });
