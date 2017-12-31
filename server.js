@@ -36,6 +36,7 @@ app.post('/email', (req, res) => {
         res.json({
             "error": "Missing value"
         });
+        return;
     }
 
 	var client = nodemailer.createTransport(sendgridTransport(options));
