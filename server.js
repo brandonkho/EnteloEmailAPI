@@ -21,7 +21,7 @@ var port = process.env.PORT || 3000;
 
 app.listen(port, () => console.log('Example app listening on port 3000!'));
 
-app.get('/email', (req, res) => res.send('Email endpoint working'));
+app.get('/email', (req, res) => res.send('Send a POST Request at this endpoint to get an email!'));
 
 app.post('/email', (req, res) => {
 	var email = req.body;
@@ -31,10 +31,10 @@ app.post('/email', (req, res) => {
 	
 	
 
-	if(!to){
+	if(!to || !subject || !body){
 		res.status(400);
         res.json({
-            "error": "Missing recipient"
+            "error": "Missing value"
         });
     }
 
@@ -50,9 +50,12 @@ app.post('/email', (req, res) => {
 
 	client.sendMail(email, function(err, info){
 		if(err){
-			console.log(err);
+			res.status(400);
+	        res.json({
+	            "error": "Email not sent"
+	        });
 		}else{
-			console.log('Message sent: ' + info.message);
+			res.status(200);
 			res.send('Email successfully sent');
 		}
 	});
